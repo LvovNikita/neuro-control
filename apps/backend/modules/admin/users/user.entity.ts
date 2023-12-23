@@ -1,14 +1,18 @@
 import { ListConfig, list } from '@keystone-6/core';
-import { text } from '@keystone-6/core/fields';
 import { BaseListTypeInfo } from '@keystone-6/core/types';
+import { password, relationship, text } from '@keystone-6/core/fields'
 
-export const RoleEntity: ListConfig<BaseListTypeInfo> = list({
+export const UserEntity: ListConfig<BaseListTypeInfo> = list({
   fields: {
-    name: text(),
-    sysname: text({
+    username: text(),
+    password: password(),
+    email: text({
       isIndexed: 'unique'
     }),
-    // groups: []
+    role: relationship({
+      ref: 'Role',
+      many: false
+    }),
   },
   access: {
     operation: {

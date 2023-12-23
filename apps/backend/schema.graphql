@@ -123,6 +123,10 @@ type Role {
   id: ID!
   name: String
   sysname: String
+  pages(where: PageWhereInput! = {}, orderBy: [PageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PageWhereUniqueInput): [Page!]
+  pagesCount(where: PageWhereInput! = {}): Int
+  permission(where: PermissionWhereInput! = {}, orderBy: [PermissionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PermissionWhereUniqueInput): [Permission!]
+  permissionCount(where: PermissionWhereInput! = {}): Int
 }
 
 input RoleWhereUniqueInput {
@@ -137,6 +141,20 @@ input RoleWhereInput {
   id: IDFilter
   name: StringFilter
   sysname: StringFilter
+  pages: PageManyRelationFilter
+  permission: PermissionManyRelationFilter
+}
+
+input PageManyRelationFilter {
+  every: PageWhereInput
+  some: PageWhereInput
+  none: PageWhereInput
+}
+
+input PermissionManyRelationFilter {
+  every: PermissionWhereInput
+  some: PermissionWhereInput
+  none: PermissionWhereInput
 }
 
 input RoleOrderByInput {
@@ -148,6 +166,22 @@ input RoleOrderByInput {
 input RoleUpdateInput {
   name: String
   sysname: String
+  pages: PageRelateToManyForUpdateInput
+  permission: PermissionRelateToManyForUpdateInput
+}
+
+input PageRelateToManyForUpdateInput {
+  disconnect: [PageWhereUniqueInput!]
+  set: [PageWhereUniqueInput!]
+  create: [PageCreateInput!]
+  connect: [PageWhereUniqueInput!]
+}
+
+input PermissionRelateToManyForUpdateInput {
+  disconnect: [PermissionWhereUniqueInput!]
+  set: [PermissionWhereUniqueInput!]
+  create: [PermissionCreateInput!]
+  connect: [PermissionWhereUniqueInput!]
 }
 
 input RoleUpdateArgs {
@@ -158,6 +192,525 @@ input RoleUpdateArgs {
 input RoleCreateInput {
   name: String
   sysname: String
+  pages: PageRelateToManyForCreateInput
+  permission: PermissionRelateToManyForCreateInput
+}
+
+input PageRelateToManyForCreateInput {
+  create: [PageCreateInput!]
+  connect: [PageWhereUniqueInput!]
+}
+
+input PermissionRelateToManyForCreateInput {
+  create: [PermissionCreateInput!]
+  connect: [PermissionWhereUniqueInput!]
+}
+
+type Permission {
+  id: ID!
+  name: String
+  sysname: String
+  description: String
+}
+
+input PermissionWhereUniqueInput {
+  id: ID
+}
+
+input PermissionWhereInput {
+  AND: [PermissionWhereInput!]
+  OR: [PermissionWhereInput!]
+  NOT: [PermissionWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  sysname: StringFilter
+  description: StringFilter
+}
+
+input PermissionOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  sysname: OrderDirection
+  description: OrderDirection
+}
+
+input PermissionUpdateInput {
+  name: String
+  sysname: String
+  description: String
+}
+
+input PermissionUpdateArgs {
+  where: PermissionWhereUniqueInput!
+  data: PermissionUpdateInput!
+}
+
+input PermissionCreateInput {
+  name: String
+  sysname: String
+  description: String
+}
+
+type Page {
+  id: ID!
+  title: String
+  parent: Page
+  showInMenu: Boolean
+}
+
+input PageWhereUniqueInput {
+  id: ID
+}
+
+input PageWhereInput {
+  AND: [PageWhereInput!]
+  OR: [PageWhereInput!]
+  NOT: [PageWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  parent: PageWhereInput
+  showInMenu: BooleanFilter
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
+input PageOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  showInMenu: OrderDirection
+}
+
+input PageUpdateInput {
+  title: String
+  parent: PageRelateToOneForUpdateInput
+  showInMenu: Boolean
+}
+
+input PageRelateToOneForUpdateInput {
+  create: PageCreateInput
+  connect: PageWhereUniqueInput
+  disconnect: Boolean
+}
+
+input PageUpdateArgs {
+  where: PageWhereUniqueInput!
+  data: PageUpdateInput!
+}
+
+input PageCreateInput {
+  title: String
+  parent: PageRelateToOneForCreateInput
+  showInMenu: Boolean
+}
+
+input PageRelateToOneForCreateInput {
+  create: PageCreateInput
+  connect: PageWhereUniqueInput
+}
+
+type Parent {
+  id: ID!
+  user: User
+  name: String
+  children(where: ChildWhereInput! = {}, orderBy: [ChildOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ChildWhereUniqueInput): [Child!]
+  childrenCount(where: ChildWhereInput! = {}): Int
+  friends(where: ParentWhereInput! = {}, orderBy: [ParentOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ParentWhereUniqueInput): [Parent!]
+  friendsCount(where: ParentWhereInput! = {}): Int
+}
+
+input ParentWhereUniqueInput {
+  id: ID
+}
+
+input ParentWhereInput {
+  AND: [ParentWhereInput!]
+  OR: [ParentWhereInput!]
+  NOT: [ParentWhereInput!]
+  id: IDFilter
+  user: UserWhereInput
+  name: StringFilter
+  children: ChildManyRelationFilter
+  friends: ParentManyRelationFilter
+}
+
+input ChildManyRelationFilter {
+  every: ChildWhereInput
+  some: ChildWhereInput
+  none: ChildWhereInput
+}
+
+input ParentManyRelationFilter {
+  every: ParentWhereInput
+  some: ParentWhereInput
+  none: ParentWhereInput
+}
+
+input ParentOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+}
+
+input ParentUpdateInput {
+  user: UserRelateToOneForUpdateInput
+  name: String
+  children: ChildRelateToManyForUpdateInput
+  friends: ParentRelateToManyForUpdateInput
+}
+
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+}
+
+input ChildRelateToManyForUpdateInput {
+  disconnect: [ChildWhereUniqueInput!]
+  set: [ChildWhereUniqueInput!]
+  create: [ChildCreateInput!]
+  connect: [ChildWhereUniqueInput!]
+}
+
+input ParentRelateToManyForUpdateInput {
+  disconnect: [ParentWhereUniqueInput!]
+  set: [ParentWhereUniqueInput!]
+  create: [ParentCreateInput!]
+  connect: [ParentWhereUniqueInput!]
+}
+
+input ParentUpdateArgs {
+  where: ParentWhereUniqueInput!
+  data: ParentUpdateInput!
+}
+
+input ParentCreateInput {
+  user: UserRelateToOneForCreateInput
+  name: String
+  children: ChildRelateToManyForCreateInput
+  friends: ParentRelateToManyForCreateInput
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input ChildRelateToManyForCreateInput {
+  create: [ChildCreateInput!]
+  connect: [ChildWhereUniqueInput!]
+}
+
+input ParentRelateToManyForCreateInput {
+  create: [ParentCreateInput!]
+  connect: [ParentWhereUniqueInput!]
+}
+
+type Child {
+  id: ID!
+  name: String
+  dateOfBirth: CalendarDay
+  gender: ChildGenderType
+  medicalInfo: String
+  testsResults(where: TestResultWhereInput! = {}, orderBy: [TestResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TestResultWhereUniqueInput): [TestResult!]
+  testsResultsCount(where: TestResultWhereInput! = {}): Int
+}
+
+scalar CalendarDay @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+
+enum ChildGenderType {
+  male
+  female
+}
+
+input ChildWhereUniqueInput {
+  id: ID
+}
+
+input ChildWhereInput {
+  AND: [ChildWhereInput!]
+  OR: [ChildWhereInput!]
+  NOT: [ChildWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  dateOfBirth: CalendarDayNullableFilter
+  gender: ChildGenderTypeNullableFilter
+  medicalInfo: StringFilter
+  testsResults: TestResultManyRelationFilter
+}
+
+input CalendarDayNullableFilter {
+  equals: CalendarDay
+  in: [CalendarDay!]
+  notIn: [CalendarDay!]
+  lt: CalendarDay
+  lte: CalendarDay
+  gt: CalendarDay
+  gte: CalendarDay
+  not: CalendarDayNullableFilter
+}
+
+input ChildGenderTypeNullableFilter {
+  equals: ChildGenderType
+  in: [ChildGenderType!]
+  notIn: [ChildGenderType!]
+  not: ChildGenderTypeNullableFilter
+}
+
+input TestResultManyRelationFilter {
+  every: TestResultWhereInput
+  some: TestResultWhereInput
+  none: TestResultWhereInput
+}
+
+input ChildOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  dateOfBirth: OrderDirection
+  gender: OrderDirection
+  medicalInfo: OrderDirection
+}
+
+input ChildUpdateInput {
+  name: String
+  dateOfBirth: CalendarDay
+  gender: ChildGenderType
+  medicalInfo: String
+  testsResults: TestResultRelateToManyForUpdateInput
+}
+
+input TestResultRelateToManyForUpdateInput {
+  disconnect: [TestResultWhereUniqueInput!]
+  set: [TestResultWhereUniqueInput!]
+  create: [TestResultCreateInput!]
+  connect: [TestResultWhereUniqueInput!]
+}
+
+input ChildUpdateArgs {
+  where: ChildWhereUniqueInput!
+  data: ChildUpdateInput!
+}
+
+input ChildCreateInput {
+  name: String
+  dateOfBirth: CalendarDay
+  gender: ChildGenderType
+  medicalInfo: String
+  testsResults: TestResultRelateToManyForCreateInput
+}
+
+input TestResultRelateToManyForCreateInput {
+  create: [TestResultCreateInput!]
+  connect: [TestResultWhereUniqueInput!]
+}
+
+type Test {
+  id: ID!
+  title: String
+  questions(where: QuestionWhereInput! = {}, orderBy: [QuestionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: QuestionWhereUniqueInput): [Question!]
+  questionsCount(where: QuestionWhereInput! = {}): Int
+}
+
+input TestWhereUniqueInput {
+  id: ID
+}
+
+input TestWhereInput {
+  AND: [TestWhereInput!]
+  OR: [TestWhereInput!]
+  NOT: [TestWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  questions: QuestionManyRelationFilter
+}
+
+input QuestionManyRelationFilter {
+  every: QuestionWhereInput
+  some: QuestionWhereInput
+  none: QuestionWhereInput
+}
+
+input TestOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+}
+
+input TestUpdateInput {
+  title: String
+  questions: QuestionRelateToManyForUpdateInput
+}
+
+input QuestionRelateToManyForUpdateInput {
+  disconnect: [QuestionWhereUniqueInput!]
+  set: [QuestionWhereUniqueInput!]
+  create: [QuestionCreateInput!]
+  connect: [QuestionWhereUniqueInput!]
+}
+
+input TestUpdateArgs {
+  where: TestWhereUniqueInput!
+  data: TestUpdateInput!
+}
+
+input TestCreateInput {
+  title: String
+  questions: QuestionRelateToManyForCreateInput
+}
+
+input QuestionRelateToManyForCreateInput {
+  create: [QuestionCreateInput!]
+  connect: [QuestionWhereUniqueInput!]
+}
+
+type Question {
+  id: ID!
+  title: String
+  description: String
+  isRequired: Boolean
+  type: QuestionTypeType
+  answer: JSON
+  points: Int
+}
+
+enum QuestionTypeType {
+  short
+  multipleChoice
+  checkboxes
+}
+
+input QuestionWhereUniqueInput {
+  id: ID
+}
+
+input QuestionWhereInput {
+  AND: [QuestionWhereInput!]
+  OR: [QuestionWhereInput!]
+  NOT: [QuestionWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  description: StringFilter
+  isRequired: BooleanFilter
+  type: QuestionTypeTypeNullableFilter
+  points: IntNullableFilter
+}
+
+input QuestionTypeTypeNullableFilter {
+  equals: QuestionTypeType
+  in: [QuestionTypeType!]
+  notIn: [QuestionTypeType!]
+  not: QuestionTypeTypeNullableFilter
+}
+
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
+input QuestionOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  description: OrderDirection
+  isRequired: OrderDirection
+  type: OrderDirection
+  points: OrderDirection
+}
+
+input QuestionUpdateInput {
+  title: String
+  description: String
+  isRequired: Boolean
+  type: QuestionTypeType
+  answer: JSON
+  points: Int
+}
+
+input QuestionUpdateArgs {
+  where: QuestionWhereUniqueInput!
+  data: QuestionUpdateInput!
+}
+
+input QuestionCreateInput {
+  title: String
+  description: String
+  isRequired: Boolean
+  type: QuestionTypeType
+  answer: JSON
+  points: Int
+}
+
+type TestResult {
+  id: ID!
+  test: Test
+  child: Child
+  date: CalendarDay
+  result: JSON
+}
+
+input TestResultWhereUniqueInput {
+  id: ID
+}
+
+input TestResultWhereInput {
+  AND: [TestResultWhereInput!]
+  OR: [TestResultWhereInput!]
+  NOT: [TestResultWhereInput!]
+  id: IDFilter
+  test: TestWhereInput
+  child: ChildWhereInput
+  date: CalendarDayNullableFilter
+}
+
+input TestResultOrderByInput {
+  id: OrderDirection
+  date: OrderDirection
+}
+
+input TestResultUpdateInput {
+  test: TestRelateToOneForUpdateInput
+  child: ChildRelateToOneForUpdateInput
+  date: CalendarDay
+  result: JSON
+}
+
+input TestRelateToOneForUpdateInput {
+  create: TestCreateInput
+  connect: TestWhereUniqueInput
+  disconnect: Boolean
+}
+
+input ChildRelateToOneForUpdateInput {
+  create: ChildCreateInput
+  connect: ChildWhereUniqueInput
+  disconnect: Boolean
+}
+
+input TestResultUpdateArgs {
+  where: TestResultWhereUniqueInput!
+  data: TestResultUpdateInput!
+}
+
+input TestResultCreateInput {
+  test: TestRelateToOneForCreateInput
+  child: ChildRelateToOneForCreateInput
+  date: CalendarDay
+  result: JSON
+}
+
+input TestRelateToOneForCreateInput {
+  create: TestCreateInput
+  connect: TestWhereUniqueInput
+}
+
+input ChildRelateToOneForCreateInput {
+  create: ChildCreateInput
+  connect: ChildWhereUniqueInput
 }
 
 """
@@ -178,6 +731,48 @@ type Mutation {
   updateRoles(data: [RoleUpdateArgs!]!): [Role]
   deleteRole(where: RoleWhereUniqueInput!): Role
   deleteRoles(where: [RoleWhereUniqueInput!]!): [Role]
+  createPermission(data: PermissionCreateInput!): Permission
+  createPermissions(data: [PermissionCreateInput!]!): [Permission]
+  updatePermission(where: PermissionWhereUniqueInput!, data: PermissionUpdateInput!): Permission
+  updatePermissions(data: [PermissionUpdateArgs!]!): [Permission]
+  deletePermission(where: PermissionWhereUniqueInput!): Permission
+  deletePermissions(where: [PermissionWhereUniqueInput!]!): [Permission]
+  createPage(data: PageCreateInput!): Page
+  createPages(data: [PageCreateInput!]!): [Page]
+  updatePage(where: PageWhereUniqueInput!, data: PageUpdateInput!): Page
+  updatePages(data: [PageUpdateArgs!]!): [Page]
+  deletePage(where: PageWhereUniqueInput!): Page
+  deletePages(where: [PageWhereUniqueInput!]!): [Page]
+  createParent(data: ParentCreateInput!): Parent
+  createParents(data: [ParentCreateInput!]!): [Parent]
+  updateParent(where: ParentWhereUniqueInput!, data: ParentUpdateInput!): Parent
+  updateParents(data: [ParentUpdateArgs!]!): [Parent]
+  deleteParent(where: ParentWhereUniqueInput!): Parent
+  deleteParents(where: [ParentWhereUniqueInput!]!): [Parent]
+  createChild(data: ChildCreateInput!): Child
+  createChildren(data: [ChildCreateInput!]!): [Child]
+  updateChild(where: ChildWhereUniqueInput!, data: ChildUpdateInput!): Child
+  updateChildren(data: [ChildUpdateArgs!]!): [Child]
+  deleteChild(where: ChildWhereUniqueInput!): Child
+  deleteChildren(where: [ChildWhereUniqueInput!]!): [Child]
+  createTest(data: TestCreateInput!): Test
+  createTests(data: [TestCreateInput!]!): [Test]
+  updateTest(where: TestWhereUniqueInput!, data: TestUpdateInput!): Test
+  updateTests(data: [TestUpdateArgs!]!): [Test]
+  deleteTest(where: TestWhereUniqueInput!): Test
+  deleteTests(where: [TestWhereUniqueInput!]!): [Test]
+  createQuestion(data: QuestionCreateInput!): Question
+  createQuestions(data: [QuestionCreateInput!]!): [Question]
+  updateQuestion(where: QuestionWhereUniqueInput!, data: QuestionUpdateInput!): Question
+  updateQuestions(data: [QuestionUpdateArgs!]!): [Question]
+  deleteQuestion(where: QuestionWhereUniqueInput!): Question
+  deleteQuestions(where: [QuestionWhereUniqueInput!]!): [Question]
+  createTestResult(data: TestResultCreateInput!): TestResult
+  createTestResults(data: [TestResultCreateInput!]!): [TestResult]
+  updateTestResult(where: TestResultWhereUniqueInput!, data: TestResultUpdateInput!): TestResult
+  updateTestResults(data: [TestResultUpdateArgs!]!): [TestResult]
+  deleteTestResult(where: TestResultWhereUniqueInput!): TestResult
+  deleteTestResults(where: [TestResultWhereUniqueInput!]!): [TestResult]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -207,6 +802,27 @@ type Query {
   roles(where: RoleWhereInput! = {}, orderBy: [RoleOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RoleWhereUniqueInput): [Role!]
   role(where: RoleWhereUniqueInput!): Role
   rolesCount(where: RoleWhereInput! = {}): Int
+  permissions(where: PermissionWhereInput! = {}, orderBy: [PermissionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PermissionWhereUniqueInput): [Permission!]
+  permission(where: PermissionWhereUniqueInput!): Permission
+  permissionsCount(where: PermissionWhereInput! = {}): Int
+  pages(where: PageWhereInput! = {}, orderBy: [PageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PageWhereUniqueInput): [Page!]
+  page(where: PageWhereUniqueInput!): Page
+  pagesCount(where: PageWhereInput! = {}): Int
+  parents(where: ParentWhereInput! = {}, orderBy: [ParentOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ParentWhereUniqueInput): [Parent!]
+  parent(where: ParentWhereUniqueInput!): Parent
+  parentsCount(where: ParentWhereInput! = {}): Int
+  children(where: ChildWhereInput! = {}, orderBy: [ChildOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ChildWhereUniqueInput): [Child!]
+  child(where: ChildWhereUniqueInput!): Child
+  childrenCount(where: ChildWhereInput! = {}): Int
+  tests(where: TestWhereInput! = {}, orderBy: [TestOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TestWhereUniqueInput): [Test!]
+  test(where: TestWhereUniqueInput!): Test
+  testsCount(where: TestWhereInput! = {}): Int
+  questions(where: QuestionWhereInput! = {}, orderBy: [QuestionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: QuestionWhereUniqueInput): [Question!]
+  question(where: QuestionWhereUniqueInput!): Question
+  questionsCount(where: QuestionWhereInput! = {}): Int
+  testResults(where: TestResultWhereInput! = {}, orderBy: [TestResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TestResultWhereUniqueInput): [TestResult!]
+  testResult(where: TestResultWhereUniqueInput!): TestResult
+  testResultsCount(where: TestResultWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

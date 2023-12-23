@@ -12,19 +12,110 @@ generator client {
 }
 
 model User {
-  id       String  @id @default(uuid()) @postgresql.Uuid
-  username String  @default("")
-  password String?
-  email    String  @unique @default("")
-  role     Role?   @relation("User_role", fields: [roleId], references: [id])
-  roleId   String? @map("role") @postgresql.Uuid
+  id               String   @id @default(uuid()) @postgresql.Uuid
+  username         String   @default("")
+  password         String?
+  email            String   @unique @default("")
+  role             Role?    @relation("User_role", fields: [roleId], references: [id])
+  roleId           String?  @map("role") @postgresql.Uuid
+  from_Parent_user Parent[] @relation("Parent_user")
 
   @@index([roleId])
 }
 
 model Role {
-  id             String @id @default(uuid()) @postgresql.Uuid
-  name           String @default("")
-  sysname        String @unique @default("")
-  from_User_role User[] @relation("User_role")
+  id             String       @id @default(uuid()) @postgresql.Uuid
+  name           String       @default("")
+  sysname        String       @unique @default("")
+  pages          Page[]       @relation("Role_pages")
+  permission     Permission[] @relation("Role_permission")
+  from_User_role User[]       @relation("User_role")
+}
+
+model Permission {
+  id                   String @id @default(uuid()) @postgresql.Uuid
+  name                 String @default("")
+  sysname              String @default("")
+  description          String @default("")
+  from_Role_permission Role[] @relation("Role_permission")
+
+  @@index([sysname])
+}
+
+model Page {
+  id               String  @id @default(uuid()) @postgresql.Uuid
+  title            String  @default("")
+  parent           Page?   @relation("Page_parent", fields: [parentId], references: [id])
+  parentId         String? @map("parent") @postgresql.Uuid
+  showInMenu       Boolean @default(false)
+  from_Role_pages  Role[]  @relation("Role_pages")
+  from_Page_parent Page[]  @relation("Page_parent")
+
+  @@index([parentId])
+}
+
+model Parent {
+  id                  String   @id @default(uuid()) @postgresql.Uuid
+  user                User?    @relation("Parent_user", fields: [userId], references: [id])
+  userId              String?  @map("user") @postgresql.Uuid
+  name                String   @default("")
+  children            Child[]  @relation("Parent_children")
+  friends             Parent[] @relation("Parent_friends")
+  from_Parent_friends Parent[] @relation("Parent_friends")
+
+  @@index([userId])
+}
+
+model Child {
+  id                    String           @id @default(uuid()) @postgresql.Uuid
+  name                  String           @default("")
+  dateOfBirth           DateTime?        @postgresql.Date
+  gender                ChildGenderType?
+  medicalInfo           String           @default("")
+  testsResults          TestResult[]     @relation("Child_testsResults")
+  from_Parent_children  Parent[]         @relation("Parent_children")
+  from_TestResult_child TestResult[]     @relation("TestResult_child")
+}
+
+model Test {
+  id                   String       @id @default(uuid()) @postgresql.Uuid
+  title                String       @default("")
+  questions            Question[]   @relation("Test_questions")
+  from_TestResult_test TestResult[] @relation("TestResult_test")
+}
+
+model Question {
+  id                  String            @id @default(uuid()) @postgresql.Uuid
+  title               String            @default("")
+  description         String            @default("")
+  isRequired          Boolean           @default(false)
+  type                QuestionTypeType?
+  answer              Json?
+  points              Int?
+  from_Test_questions Test[]            @relation("Test_questions")
+}
+
+model TestResult {
+  id                      String    @id @default(uuid()) @postgresql.Uuid
+  test                    Test?     @relation("TestResult_test", fields: [testId], references: [id])
+  testId                  String?   @map("test") @postgresql.Uuid
+  child                   Child?    @relation("TestResult_child", fields: [childId], references: [id])
+  childId                 String?   @map("child") @postgresql.Uuid
+  date                    DateTime? @postgresql.Date
+  result                  Json?
+  from_Child_testsResults Child[]   @relation("Child_testsResults")
+
+  @@index([testId])
+  @@index([childId])
+}
+
+enum ChildGenderType {
+  male
+  female
+}
+
+enum QuestionTypeType {
+  short
+  multipleChoice
+  checkboxes
 }
