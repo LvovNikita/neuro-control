@@ -20,10 +20,10 @@ export const QuestionEntity: ListConfig<BaseListTypeInfo> = list({
   },
   access: {
     operation: {
-      query: () => true,
-      create: () => true,
-      update: () => true,
-      delete: () => true
+      query: () => false,
+      create: () => false,
+      update: () => false,
+      delete: () => false
     }
   },
 })

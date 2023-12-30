@@ -24,7 +24,6 @@ input UserWhereInput {
   NOT: [UserWhereInput!]
   id: IDFilter
   username: StringFilter
-  password: PasswordFilter
   email: StringFilter
   role: RoleWhereInput
 }
@@ -72,10 +71,6 @@ input NestedStringFilter {
   startsWith: String
   endsWith: String
   not: NestedStringFilter
-}
-
-input PasswordFilter {
-  isSet: Boolean!
 }
 
 input UserOrderByInput {
