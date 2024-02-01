@@ -1,6 +1,7 @@
 import { ListConfig, list } from '@keystone-6/core';
 import { text, select, checkbox, json, integer } from '@keystone-6/core/fields';
 import { BaseListTypeInfo } from '@keystone-6/core/types';
+import { allowAdminRuleGroup, allowParentRuleGroup } from '../../auth';
 
 export const QuestionEntity: ListConfig<BaseListTypeInfo> = list({
   fields: {
@@ -20,10 +21,10 @@ export const QuestionEntity: ListConfig<BaseListTypeInfo> = list({
   },
   access: {
     operation: {
-      query: () => false,
-      create: () => false,
-      update: () => false,
-      delete: () => false
+      query: allowParentRuleGroup,
+      create: allowAdminRuleGroup,
+      update: allowAdminRuleGroup,
+      delete: allowAdminRuleGroup
     }
   },
 })

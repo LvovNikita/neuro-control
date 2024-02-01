@@ -1,7 +1,7 @@
 import { ListConfig, list } from '@keystone-6/core';
 import { BaseListTypeInfo } from '@keystone-6/core/types';
 import { relationship, text } from '@keystone-6/core/fields'
-import { allowAdminRuleGroup, allowParentRuleGroup } from '../../auth';
+import { allowAdminRuleGroup, allowSelf } from '../../auth';
 
 export const ParentEntity: ListConfig<BaseListTypeInfo> = list({
   fields: {
@@ -21,10 +21,10 @@ export const ParentEntity: ListConfig<BaseListTypeInfo> = list({
   },
   access: {
     operation: {
-      query: () => false,
-      create: () => false,
-      update: () => false,
-      delete: allowAdminRuleGroup
+      query: allowSelf,
+      create: allowAdminRuleGroup,
+      update: allowSelf,
+      delete: allowSelf
     }
   },
 })

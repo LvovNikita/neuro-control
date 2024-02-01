@@ -1,6 +1,7 @@
 import { ListConfig, list } from '@keystone-6/core';
 import { text, calendarDay, select, relationship } from '@keystone-6/core/fields';
 import { BaseListTypeInfo } from '@keystone-6/core/types';
+import { allowParent } from '../auth';
 
 export const ChildEntity: ListConfig<BaseListTypeInfo> = list({
   fields: {
@@ -21,10 +22,10 @@ export const ChildEntity: ListConfig<BaseListTypeInfo> = list({
   },
   access: {
     operation: {
-      query: () => false,
-      create: () => false,
-      update: () => false,
-      delete: () => false
+      query: allowParent,
+      create: allowParent,
+      update: allowParent,
+      delete: allowParent
     }
   },
 })
